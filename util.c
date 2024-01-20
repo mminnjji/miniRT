@@ -1,0 +1,186 @@
+#include "util.h"
+#include "scene.h"
+
+// 벡터 init 
+t_vec3      vec3(double x, double y, double z)
+{
+    t_vec3 vec;
+
+    vec.x = x;
+    vec.y = y;
+    vec.z = z;
+    return (vec);
+}
+
+// 좌표 init
+t_point3    point3(double x, double y, double z)
+{
+    t_point3 point;
+
+    point.x = x;
+    point.y = y;
+    point.z = z;
+    return (point);
+}
+
+//rgb init
+t_point3    color3(double r, double g, double b)
+{
+    t_color3 color;
+
+    color.x = r;
+    color.y = g;
+    color.z = b;
+    return (color);
+}
+
+// 벡터 변경 (좌표값)
+void        vset(t_vec3 *vec, double x, double y, double z)
+{
+    vec->x = x;
+    vec->y = y;
+    vec->z = z;
+}
+
+// 벡터 길이 제곱
+double      vlength2(t_vec3 vec)
+{
+    return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+}
+
+// 벡터 길이
+double      vlength(t_vec3 vec)
+{
+    return (sqrt(vlength2(vec)));
+}
+
+// 벡터합 - 벡터 두개 주어질 때
+t_vec3      vplus(t_vec3 vec, t_vec3 vec2)
+{
+    vec.x += vec2.x;
+    vec.y += vec2.y;
+    vec.z += vec2.z;
+    return (vec);
+}
+
+// 벡터합2 - 벡터와 좌표 주어질 때
+t_vec3      vplus_(t_vec3 vec, double x, double y, double z)
+{
+    vec.x += x;
+    vec.y += y;
+    vec.z += z;
+    return (vec);
+}
+
+// 벡터차
+t_vec3      vminus(t_vec3 vec, t_vec3 vec2)
+{
+    vec.x -= vec2.x;
+    vec.y -= vec2.y;
+    vec.z -= vec2.z;
+    return (vec);
+}
+
+t_vec3      vminus_(t_vec3 vec, double x, double y, double z)
+{
+    vec.x -= x;
+    vec.y -= y;
+    vec.z -= z;
+    return (vec);
+}
+
+// 벡터 * 스칼라 곱연산 - 벡터 크기 증가
+t_vec3      vmult(t_vec3 vec, double t)
+{
+    vec.x *= t;
+    vec.y *= t;
+    vec.z *= t;
+    return (vec);
+}
+
+// 벡터 곱 - 어디쓰는건지 모르겠음
+t_vec3      vmult_(t_vec3 vec, t_vec3 vec2)
+{
+    vec.x *= vec2.x;
+    vec.y *= vec2.y;
+    vec.z *= vec2.z;
+    return (vec);
+}
+
+// 벡터 스칼라 나누기
+t_vec3      vdivide(t_vec3 vec, double t)
+{
+    vec.x *= 1 / t;
+    vec.y *= 1 / t;
+    vec.z *= 1 / t;
+
+    return vec;
+}
+
+// 벡터 내적
+double      vdot(t_vec3 vec, t_vec3 vec2)
+{
+    return (vec.x * vec2.x + vec.y * vec2.y + vec.z * vec2.z);
+}
+
+// 벡터 외적
+t_vec3      vcross(t_vec3 vec, t_vec3 vec2)
+{
+    t_vec3 new;
+
+    new.x = vec.y * vec2.z - vec.z * vec2.y;
+    new.y = vec.z * vec2.x - vec.x * vec2.z;
+    new.z = vec.x * vec2.y - vec.y * vec2.x;
+    return (new);
+}
+
+// 단위 벡터 // 벡터를 벡터의 길이로 나눔
+t_vec3      vunit(t_vec3 vec)
+{
+    double len = vlength(vec);
+    if (len == 0)
+    {
+        printf("Error\n:Devider is 0");
+        exit(0);
+    }
+    vec.x /= len;
+    vec.y /= len;
+    vec.z /= len;
+    return (vec);
+}
+
+// 두 벡터의 원소를 비교하여 작은 값들만 반환 - 어따쓰는건지 또 모름ㅋㅋ
+t_vec3  vmin(t_vec3 vec1, t_vec3 vec2)
+{
+    if (vec1.x > vec2.x)
+        vec1.x = vec2.x;
+    if (vec1.y > vec2.y)
+        vec1.y = vec2.y;
+    if (vec1.z > vec2.z)
+        vec1.z = vec2.z;
+    return (vec1);
+}
+
+void        oadd(t_object **list, t_object *new)
+{
+    t_object    *cur;
+
+    if (*list == NULL)
+    {
+        *list = new;
+        return ;
+    }
+    cur = *list;
+    while (cur->next)
+        cur = cur->next;
+    cur->next = new;
+}
+
+t_object    *olast(t_object *list)
+{
+    if (list == NULL)
+        return (NULL);
+    while (list->next)
+        list = list->next;
+    return (list);
+}
