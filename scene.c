@@ -1,15 +1,5 @@
 #include "scene.h"
 
-t_canvas    canvas(int  width, int height)
-{
-    t_canvas canvas;
-
-    canvas.width = width;
-    canvas.height = height;
-    canvas.aspect_ratio = (double)width / (double)height;
-    return (canvas);
-}
-
 t_camera    camera(t_canvas *canvas, t_point3 orig)
 {
     t_camera    cam;
@@ -20,7 +10,7 @@ t_camera    camera(t_canvas *canvas, t_point3 orig)
     focal_len = 1.0;
     cam.orig = orig;
     cam.viewport_h = viewport_height;
-    cam.viewport_w = viewport_height * canvas->aspect_ratio; // 세로 지정해두고 가로세로 비로 가로 지정
+    cam.viewport_w = viewport_height * canvas->aspect_ratio;
     cam.focal_len = focal_len;
     cam.horizontal = vec3(cam.viewport_w, 0, 0);
     cam.vertical = vec3(0, cam.viewport_h, 0);

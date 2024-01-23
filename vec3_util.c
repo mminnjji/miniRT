@@ -1,5 +1,4 @@
-#include "util.h"
-#include "scene.h"
+#include "utils.h"
 
 // 벡터 init 
 t_vec3      vec3(double x, double y, double z)
@@ -159,28 +158,4 @@ t_vec3  vmin(t_vec3 vec1, t_vec3 vec2)
     if (vec1.z > vec2.z)
         vec1.z = vec2.z;
     return (vec1);
-}
-
-void        oadd(t_object **list, t_object *new)
-{
-    t_object    *cur;
-
-    if (*list == NULL)
-    {
-        *list = new;
-        return ;
-    }
-    cur = *list;
-    while (cur->next)
-        cur = cur->next;
-    cur->next = new;
-}
-
-t_object    *olast(t_object *list)
-{
-    if (list == NULL)
-        return (NULL);
-    while (list->next)
-        list = list->next;
-    return (list);
 }

@@ -1,11 +1,10 @@
-#ifndef UTIL_H
-# define UTIL_H
+#ifndef UTILS_H
+# define UTILS_H
 
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include "structures.h"
-# include "scene.h"
 
 t_vec3      vec3(double x, double y, double z);
 t_point3    point3(double x, double y, double z);

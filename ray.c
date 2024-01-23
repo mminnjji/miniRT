@@ -33,14 +33,14 @@ t_ray       ray_primary(t_camera *cam, double u, double v)
 
 t_color3    ray_color(t_ray *ray, t_object *world)
 {
-    double			t;
-	t_hit_record	rec;
+    double  t;
+	t_hit_record    rec;
 
 	rec.tmin = 0;
-	rec.tmax = INFINITY;
+    rec.tmax = INFINITY;
     if (hit(world, ray, &rec))
         return (vmult(vplus(rec.normal, color3(1, 1, 1)), 0.5));
-    else
+	else
     {
         t = 0.5 * (ray->dir.y + 1.0);
         return (vplus(vmult(color3(1, 1, 1), 1.0 - t), vmult(color3(0.5, 0.7, 1.0),     t)));

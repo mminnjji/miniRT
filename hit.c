@@ -1,40 +1,6 @@
-#include "scene.h"
-#include "util.h"
+#include "structures.h"
+#include "utils.h"
 #include "trace.h"
-
-// 오브젝트 만들때 호출
-t_object    *object(t_object_type type, void *element)
-{
-    t_object    *new;
-
-    if (!(new = (t_object *)malloc(sizeof(t_object))))
-        return (NULL);
-    new->type = type;
-    new->element = element;
-    new->next = NULL;
-    return (new);
-}
-
-// 구 만들 때 호출
-t_sphere    *sphere(t_point3 center, double radius)
-{
-    t_sphere *sp;
-
-    if(!(sp = (t_sphere *)malloc(sizeof(t_sphere))))
-        return (NULL);
-    sp->center = center;
-    sp->radius = radius;
-    sp->radius2 = radius * radius;
-    return (sp);
-}
-
-void    set_face_normal(t_ray *r, t_hit_record *rec)
-{
-    // 광선의 방향벡터와 교점의 법선벡터의 내적이 음수이면 광선은 앞면(객체의)에 hit 한 것이다
-    rec->front_face = vdot(r->dir, rec->normal) < 0;
-    // 광선의 앞면에 hit 면 그대로 아니면 법선을 반대로 뒤집는다. (항상 광선 방향벡터와 법선 벡터를 반대인 상태로 사용하기위해)
-    rec->normal = (rec->front_face) ? rec->normal : vmult(rec->normal, -1);
-}
 
 t_bool      hit(t_object *world, t_ray *ray, t_hit_record *rec)
 {
