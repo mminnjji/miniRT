@@ -35,6 +35,7 @@ t_bool      hit_obj(t_object *world, t_ray *ray, t_hit_record *rec)
 
 t_bool      hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 {
+	t_sphere    *sp;
     t_vec3  oc; //방향벡터로 나타낸 구의 중심.
     //a, b, c는 각각 t에 관한 2차 방정식의 계수
     double  a;
@@ -43,7 +44,6 @@ t_bool      hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
     double  discriminant; //판별
 	double  sqrtd;
     double  root;
-	t_sphere *sp;
 
 	sp = world->element;
     oc = vminus(ray->orig, sp->center);
@@ -67,5 +67,6 @@ t_bool      hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 	rec->p = ray_at(ray, root);
 	rec->normal = vdivide(vminus(rec->p, sp->center), sp->radius); 
 	set_face_normal(ray, rec);
+	rec->albedo = world->albedo;
 	return (TRUE);
 }
