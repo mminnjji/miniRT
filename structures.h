@@ -66,7 +66,7 @@ struct  s_canvas
 struct s_material
 {
 	void *type;
-}
+};
 
 struct s_hit_record
 {
