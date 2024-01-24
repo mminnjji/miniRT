@@ -1,4 +1,5 @@
 #include "print.h"
+#include <math.h>
 
 double clamp(double x, double min, double max) {
     if (x < min) return min;
@@ -12,9 +13,9 @@ void    write_color(t_color3 pixel_color)
 	double scale;
 
 	scale = 0.01;
-	cc[0] = pixel_color.x * scale;
-	cc[1] = pixel_color.y * scale;
-	cc[2] = pixel_color.z * scale;
+	cc[0] = sqrt(pixel_color.x * scale);
+	cc[1] = sqrt(pixel_color.y * scale);
+	cc[2] = sqrt(pixel_color.z * scale);
     printf("%d %d %d\n", (int)(255.999 * clamp(cc[0], 0.0, 0.999)),
                         (int)(255.999 * clamp(cc[1], 0.0, 0.999)),
                         (int)(255.999 * clamp(cc[2], 0.0, 0.999)));

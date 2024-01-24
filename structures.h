@@ -12,6 +12,7 @@ typedef struct s_sphere t_sphere;
 typedef struct s_hit_record t_hit_record;
 typedef struct s_light  t_light;
 typedef struct s_scene t_scene;
+typedef struct s_material t_material;
 
 typedef int             t_bool;
 # define FALSE 0
@@ -62,6 +63,11 @@ struct  s_canvas
     double  aspect_ratio; //가로 세로 비율
 };
 
+struct s_material
+{
+	void *type;
+}
+
 struct s_hit_record
 {
     t_point3    p;
@@ -71,6 +77,7 @@ struct s_hit_record
     double      t;
     t_bool      front_face;
 	t_color3    albedo; // 반사율
+	t_material	*material;
 };
 
 struct  s_scene
@@ -79,7 +86,7 @@ struct  s_scene
     t_camera        camera;
     t_object        *world;
     t_object        *light;
-    t_color3         ambient; // 8.4에서 설명할 요소
+    t_color3        ambient;
     t_ray           ray;
     t_hit_record    rec;
 };

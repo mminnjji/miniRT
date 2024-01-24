@@ -46,8 +46,8 @@ t_color3    ray_color(t_scene *scene, int count)
 	t_vec3  direc;
 
 	scene->rec = record_init();
-	// if (count > 100)
-	// 	return (color3(1, 1, 1));
+	if (count > 100)
+		return (color3(1, 1, 1));
     if (hit(scene->world, &scene->ray, &scene->rec))
 	{
 		direc = random_on_hemisphere(scene->rec.normal);
