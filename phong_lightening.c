@@ -12,7 +12,7 @@ t_color3        phong_lighting(t_scene *scene)
     t_object    *lights;
 	double      brightness;
 
-    light_color = color3(0, 0, 0); //광원이 하나도 없다면, 빛의 양은 (0, 0, 0)일 것이다. // 초기화 - 빛을 컬러값으로 나타내야함
+    light_color = color3(0.5, 0.5, 0.5); //광원이 하나도 없다면, 빛의 양은 (0, 0, 0)일 것이다. // 초기화 - 빛을 컬러값으로 나타내야함
     lights = scene->light;  // 광원도 .. 오브젝트다! 
     while (lights) //여러 광원에서 나오는 모든 빛에 대해 각각 diffuse, specular 값을 모두 구해줘야 한다
     {

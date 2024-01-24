@@ -107,4 +107,7 @@ struct      s_light
     double      bright_ratio; 
 };
 
+double random_double();
+t_vec3 random_on_hemisphere(t_vec3 normal);
+
 #endif
