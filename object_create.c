@@ -26,6 +26,7 @@ t_sphere    *sphere(t_point3 center, double radius)
     return (sp);
 }
 
+
 t_light     *light_point(t_point3 light_origin, t_color3 light_color, double bright_ratio)
 {
     t_light *light;

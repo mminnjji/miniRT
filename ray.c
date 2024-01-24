@@ -40,26 +40,16 @@ t_hit_record record_init(void)
     return (record);
 }
 
-t_color3    ray_color(t_scene *scene, int count)
+t_color3    ray_color(t_scene *scene)
 {
     double  t;
-	t_vec3  direc;
 
 	scene->rec = record_init();
-	if (count > 100)
-		return (color3(1, 1, 1));
     if (hit(scene->world, &scene->ray, &scene->rec))
-	{
-		direc = random_on_hemisphere(scene->rec.normal);
-		scene->ray.dir = direc;
-		scene->ray.orig = scene->rec.p;
-        return (vmult(ray_color(scene, ++count), 0.5));
-	}
+		return (phong_lighting(scene));
     else
     {
-        //ray의 방향벡터의 y 값을 기준으로 그라데이션을 주기 위한 계수.
         t = 0.5 * (scene->ray.dir.y + 1.0);
-        // (1-t) * 흰색 + t * 하늘색
         return (vplus(vmult(color3(1, 1, 1), 1.0 - t), vmult(color3(0.5, 0.7, 1.0), t)));
     }
 }
