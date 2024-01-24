@@ -71,10 +71,10 @@ t_scene	*scene_init(void)
     if(!(scene = (t_scene *)malloc(sizeof(t_scene))))
         return (NULL);
     scene->canvas = canvas(400, 300);
-    scene->camera = camera(&scene->canvas, point3(0, 0, 0));
+    scene->camera = camera(&scene->canvas, point3(-2, 2, 2), point3(0,0,-1), vec3(0,1,0), 90);
     world = object(SP, sphere(point3(0, -1000, -5), 998), color3(1, 1, 1));
-	oadd(&world, object(SP, sphere(point3(-2, 0, -5), 2), color3(0.5, 0.5, 0))); // world 에 구1 추가
-    oadd(&world, object(SP, sphere(point3(2, 0, -5), 2), color3(0, 0.5, 0.5))); // world 에 구2 추가
+	//oadd(&world, object(SP, sphere(point3(-2, 0, -5), 2), color3(0.5, 0.5, 0))); // world 에 구1 추가
+    oadd(&world, object(SP, sphere(point3(0, 0, -5), 2), color3(0, 0.5, 0.5))); // world 에 구2 추가
     scene->world = world;
     lights = object(LIGHT_POINT, light_point(point3(0, 20, 0), color3(1, 1, 1), 0.7), color3(0, 0, 0));
     scene->light = lights;

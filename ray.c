@@ -53,7 +53,7 @@ t_color3    ray_color(t_scene *scene, int count)
 		direc = random_on_hemisphere(scene->rec.normal);
 		scene->ray.dir = direc;
 		scene->ray.orig = scene->rec.p;
-        return (vmult(ray_color(scene, count), 0.5));
+        return (vmult(ray_color(scene, ++count), 0.5));
 	}
     else
     {
