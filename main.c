@@ -70,12 +70,12 @@ t_scene	*scene_init(void)
     if(!(scene = (t_scene *)malloc(sizeof(t_scene))))
         return (NULL);
     scene->canvas = canvas(400, 300);
-	//scene->camera = camera(&scene->canvas, point3(0, 0, 0));
     scene->camera = camera(&scene->canvas, point3(0, 0, 0), point3(0,0,-5), vec3(0,1,0), 90);
     world = object(SP, sphere(point3(-3, 0, -5), 1), color3(0.5, 0.5, 0));
-    oadd(&world, object(SP, sphere(point3(3, 0, -5), 1), color3(0, 0.5, 0.5))); // world 에 구2 추가
-    scene->world = world;
-    lights = object(LIGHT_POINT, light_point(point3(10, 10, 0), color3(1, 1, 1), 0.7), color3(0, 0, 0));
+    oadd(&world, object(SP, sphere(point3(3, 0, -5), 1), color3(0, 0.5, 0.5)));
+    oadd(&world, object(P, plane(point3(3, 0, -5), vec3(1, 1, 0)), color3(1, 0, 0)));
+	scene->world = world;
+    lights = object(LIGHT_POINT, light_point(point3(10, 10, 0), color3(1, 1, 1), 0.7), color3(1, 1, 1));
     scene->light = lights;
     ka = 0.1; 
     scene->ambient = vmult(color3(1,1,1), ka); 

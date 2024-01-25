@@ -27,6 +27,18 @@ t_sphere    *sphere(t_point3 center, double radius)
 }
 
 
+t_plane    *plane(t_point3 center, t_vec3 normal)
+{
+    t_plane *p;
+
+    if(!(p = (t_plane *)malloc(sizeof(t_plane))))
+        return (NULL);
+    p->center = center;
+    p->normal = normal;
+    return (p);
+}
+
+
 t_light     *light_point(t_point3 light_origin, t_color3 light_color, double bright_ratio)
 {
     t_light *light;

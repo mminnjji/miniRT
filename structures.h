@@ -13,13 +13,17 @@ typedef struct s_hit_record t_hit_record;
 typedef struct s_light  t_light;
 typedef struct s_scene t_scene;
 typedef struct s_material t_material;
+typedef struct s_plane t_plane;
 
 typedef int             t_bool;
 # define FALSE 0
 # define TRUE 1
 
 typedef int             t_object_type;
+
 # define SP 0
+# define P 1
+# define C 2
 
 # define LIGHT_POINT 1
 
@@ -63,11 +67,6 @@ struct  s_canvas
     double  aspect_ratio; //가로 세로 비율
 };
 
-struct s_material
-{
-	void *type;
-};
-
 struct s_hit_record
 {
     t_point3    p;
@@ -77,7 +76,6 @@ struct s_hit_record
     double      t;
     t_bool      front_face;
 	t_color3    albedo; // 반사율
-	t_material	*material;
 };
 
 struct  s_scene
@@ -98,6 +96,19 @@ struct  s_sphere
     double      radius2;
 };
 
+struct  s_plane
+{
+    t_point3    center;
+	t_vec3		normal;
+};
+
+struct  s_cylinder
+{
+    t_point3    center;
+	t_vec3		normal;
+	double		diameter;
+	double		height;
+};
 
 struct s_object
 {
