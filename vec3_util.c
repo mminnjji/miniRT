@@ -42,6 +42,19 @@ void        vset(t_vec3 *vec, double x, double y, double z)
 }
 
 // 벡터 길이 제곱
+
+double      vlength3(t_vec3 vec1, t_vec3 vec2)
+{
+	double x;
+	double y;
+	double z;
+
+	x = (vec1.x - vec2.x) * (vec1.x - vec2.x);
+	y = (vec1.y - vec2.y) * (vec1.y - vec2.y);
+	z = (vec1.z - vec2.z) * (vec1.z - vec2.z);
+    return (x + y + z);
+}
+
 double      vlength2(t_vec3 vec)
 {
     return (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);

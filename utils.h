@@ -12,6 +12,7 @@ t_point3    color3(double r, double g, double b);
 void        vset(t_vec3 *vec, double x, double y, double z);
 double      vlength2(t_vec3 vec);
 double      vlength(t_vec3 vec);
+double      vlength3(t_vec3 vec1, t_vec3 vec2);
 t_vec3      vplus(t_vec3 vec, t_vec3 vec2);
 t_vec3      vplus_(t_vec3 vec, double x, double y, double z);
 t_vec3      vminus(t_vec3 vec, t_vec3 vec2);

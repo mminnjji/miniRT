@@ -73,7 +73,8 @@ t_scene	*scene_init(void)
     scene->camera = camera(&scene->canvas, point3(0, 0, 0), point3(0,0,-5), vec3(0,1,0), 90);
     world = object(SP, sphere(point3(-3, 0, -5), 1), color3(0.5, 0.5, 0));
     oadd(&world, object(SP, sphere(point3(3, 0, -5), 1), color3(0, 0.5, 0.5)));
-    oadd(&world, object(P, plane(point3(3, 0, -5), vec3(1, 1, 0)), color3(1, 0, 0)));
+    oadd(&world, object(P, plane(point3(5, 5, -5), vec3(1, 1, 0)), color3(1, 0, 0)));
+	oadd(&world, object(C, cylinder(point3(0, 0, -5), vec3(0.1, 1, -0.1), 1.0, .0), color3(0.5, 0, 0.5)));
 	scene->world = world;
     lights = object(LIGHT_POINT, light_point(point3(10, 10, 0), color3(1, 1, 1), 0.7), color3(1, 1, 1));
     scene->light = lights;
