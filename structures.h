@@ -26,7 +26,7 @@ typedef int             t_object_type;
 # define P 1
 # define C 2
 
-# define LIGHT_POINT 1
+# define LIGHT_POINT 3
 
 # define EPSILON 1e-6 // 0.000001
 

@@ -10,9 +10,8 @@ t_color3        phong_lighting(t_scene *scene)
 {
     t_color3    light_color;
     t_object    *lights;
-	double      brightness;
 
-    light_color = color3(0.5, 0.5, 0.5); //광원이 하나도 없다면, 빛의 양은 (0, 0, 0)일 것이다. // 초기화 - 빛을 컬러값으로 나타내야함
+    light_color = color3(0, 0, 0); //광원이 하나도 없다면, 빛의 양은 (0, 0, 0)일 것이다. // 초기화 - 빛을 컬러값으로 나타내야함
     lights = scene->light;  // 광원도 .. 오브젝트다! 
     while (lights) //여러 광원에서 나오는 모든 빛에 대해 각각 diffuse, specular 값을 모두 구해줘야 한다
     {
@@ -42,7 +41,7 @@ t_color3        point_light_get(t_scene *scene, t_light *light)
 
 	light_dir = vminus(light->origin, scene->rec.p);
     light_len = vlength(light_dir);
-    light_ray = ray(vplus(scene->rec.p, vmult(scene->rec.normal, EPSILON)), light_dir);
+    light_ray = ray(vplus(scene->rec.p, vmult(vec3(1,1,1), EPSILON)), light_dir);
     if (in_shadow(scene->world, light_ray, light_len))
         return (color3(0,0,0));
     light_dir = vunit(light_dir);

@@ -114,18 +114,33 @@ t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 	cy = world->element;
 
 	// 원기둥의 밑면(원부분)
-	root = (vdot(vminus(vmult(ray->orig, 2), cy->center), cy->normal) - cy->height / 2) / vdot(ray->dir, cy->normal);
+	root = -1 * (vdot(vminus(vmult(ray->orig, 2), cy->center), cy->normal) - cy->height / 2) / vdot(ray->dir, cy->normal);
 	// oc +- (height / 2) * normal // ray // length
-	r = vplus(vminus(cy->center, ray->orig), vmult(cy->normal, 0.5));
+	r = vplus(vminus(cy->center, ray->orig), vmult(cy->normal, 0.5 * cy->height));
 	if (vlength3(ray_at(ray, root), r) <= cy->diameter * cy->diameter)
 	{
 		rec->t = root;
 		rec->p = ray_at(ray, root);
 		r = vminus(rec->p, vminus(ray->orig, cy->center));
 		rec->normal = cy->normal;
-		set_face_normal(ray, rec);
+		//set_face_normal(ray, rec);
 		rec->albedo = world->albedo;
 		return (TRUE);
+	}
+	else
+	{
+		root = -1 * (vdot(vminus(vmult(ray->orig, 2), cy->center), cy->normal) + cy->height / 2) / vdot(ray->dir, cy->normal);
+		r = vplus(vminus(cy->center, ray->orig), vmult(cy->normal, -0.5 * cy->height));
+		if (vlength3(ray_at(ray, root), r) <= cy->diameter * cy->diameter)
+		{
+			rec->t = root;
+			rec->p = ray_at(ray, root);
+			r = vminus(rec->p, vminus(ray->orig, cy->center));
+			rec->normal = vmult(cy->normal, -1);
+			//set_face_normal(ray, rec);
+			rec->albedo = world->albedo;
+			return (TRUE);
+		}
 	}
 
 	// 원기둥의 옆면
@@ -140,11 +155,11 @@ t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 	sqrtd = sqrt(discriminant);
 	root = (-b - sqrtd) / (2 * a); // 근의 공식 - 위를 2로 나눠서 처리해준 것 +- 공식이므로 작은 것 부터 확인
 	len = vdot(cy->normal, vminus(ray_at(ray,root), vminus(cy->center, ray->orig)));
-	if (root > rec->tmin || rec->tmax < root )//|| len >= cy->height / 2 || len <= cy->height / 2 * -1) // 근이 최솟값 보다 작거나 최댓값 보다 클 때
+	if (root > rec->tmin || rec->tmax < root || len >= cy->height / 2 || len <= cy->height / 2 * -1) // 근이 최솟값 보다 작거나 최댓값 보다 클 때
 	{
 		root = (-b + sqrtd) / (2 * a); // 새로운 근을 구함
 		//len = vdot(cy->normal, vminus(ray_at(ray,root), vminus(cy->center, ray->orig)));
-		if (root < rec->tmin || rec->tmax < root )//|| len >= cy->height / 2 || len <= cy->height / 2 * -1) // 새로운 근도 범위에 없다면 리턴
+		if (root < rec->tmin || rec->tmax < root || len >= cy->height / 2 || len <= cy->height / 2 * -1) // 새로운 근도 범위에 없다면 리턴
 			return (FALSE);
 	}
 	rec->t = root;

@@ -42,14 +42,9 @@ t_hit_record record_init(void)
 
 t_color3    ray_color(t_scene *scene)
 {
-    double  t;
-
 	scene->rec = record_init();
     if (hit(scene->world, &scene->ray, &scene->rec))
 		return (phong_lighting(scene));
     else
-    {
-        t = 0.5 * (scene->ray.dir.y + 1.0);
-        return (vplus(vmult(color3(1, 1, 1), 1.0 - t), vmult(color3(0.5, 0.7, 1.0), t)));
-    }
+        return (color3(0, 0, 0));
 }
