@@ -85,7 +85,7 @@ t_bool      hit_plane(t_object *world, t_ray *ray, t_hit_record *rec)
 	
 	root = vdot(p->normal, ray->dir);
 	if (root != 0)
-		root = vdot(vminus(ray->orig, p->center), p->normal) / root;
+		root = vdot(vminus(p->center, vmult(ray->orig, 2)), p->normal) / root;
 	else
 		return (FALSE);
 	if (root < rec->tmin || rec->tmax < root)

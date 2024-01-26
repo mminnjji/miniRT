@@ -41,11 +41,10 @@ t_color3        point_light_get(t_scene *scene, t_light *light)
 
 	light_dir = vminus(light->origin, scene->rec.p);
     light_len = vlength(light_dir);
-    light_ray = ray(vplus(scene->rec.p, vmult(vec3(1,1,1), EPSILON)), light_dir);
+    light_ray = ray(vplus(light->origin, vmult(vec3(1,1,1), EPSILON)), vunit(light_dir));
     if (in_shadow(scene->world, light_ray, light_len))
         return (color3(0,0,0));
     light_dir = vunit(light_dir);
-    // cosΘ는 Θ 값이 90도 일 때 0이고 Θ가 둔각이 되면 음수가 되므로 0.0보다 작은 경우는 0.0으로 대체한다.
     kd = fmax(vdot(scene->rec.normal, light_dir), 0.0);// (교점에서 출발하여 광원을 향하는 벡터)와 (교점에서의 법선벡터)의 내적값.
     diffuse = vmult(light->light_color, kd);
 	view_dir = vunit(vmult(scene->ray.dir, -1));
