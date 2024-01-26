@@ -158,15 +158,15 @@ t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 	if (root > rec->tmin || rec->tmax < root || len >= cy->height / 2 || len <= cy->height / 2 * -1) // 근이 최솟값 보다 작거나 최댓값 보다 클 때
 	{
 		root = (-b + sqrtd) / (2 * a); // 새로운 근을 구함
-		//len = vdot(cy->normal, vminus(ray_at(ray,root), vminus(cy->center, ray->orig)));
+		len = vdot(cy->normal, vminus(ray_at(ray,root), vminus(cy->center, ray->orig)));
 		if (root < rec->tmin || rec->tmax < root || len >= cy->height / 2 || len <= cy->height / 2 * -1) // 새로운 근도 범위에 없다면 리턴
 			return (FALSE);
 	}
 	rec->t = root;
 	rec->p = ray_at(ray, root);
 	r = vminus(rec->p, vminus(ray->orig, cy->center));
-	rec->normal = vminus(r, vmult(cy->normal, vdot(r, cy->normal)));
-	set_face_normal(ray, rec);
+	rec->normal = vminus(vminus(r, vmult(vminus(cy->center, ray->orig), 2)), vmult(cy->normal, vdot(vminus(r, vminus(cy->center, ray->orig)), cy->normal)));
+	//set_face_normal(ray, rec);
 	rec->albedo = world->albedo;
 	return (TRUE);
 }
