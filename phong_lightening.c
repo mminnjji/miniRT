@@ -41,7 +41,7 @@ t_color3        point_light_get(t_scene *scene, t_light *light)
 
 	light_dir = vminus(light->origin, scene->rec.p);
     light_len = vlength(light_dir);
-    light_ray = ray(vplus(light->origin, vmult(vec3(1,1,1), EPSILON)), vunit(light_dir));
+    light_ray = ray(vplus(scene->rec.p, vmult(vec3(1,1,1), EPSILON)), light_dir);
     if (in_shadow(scene->world, light_ray, light_len))
         return (color3(0,0,0));
     light_dir = vunit(light_dir);

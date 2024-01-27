@@ -100,6 +100,7 @@ t_bool      hit_plane(t_object *world, t_ray *ray, t_hit_record *rec)
 
 t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 {
+	t_vec3 oc;
 	t_cylinder *cy;
 	double root;
 	t_vec3 ap;
@@ -113,40 +114,39 @@ t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 	double len;
 	cy = world->element;
 
-	// 원기둥의 밑면(원부분)
-	root = -1 * (vdot(vminus(vmult(ray->orig, 2), cy->center), cy->normal) - cy->height / 2) / vdot(ray->dir, cy->normal);
-	// oc +- (height / 2) * normal // ray // length
-	r = vplus(vminus(cy->center, ray->orig), vmult(cy->normal, 0.5 * cy->height));
-	if (vlength3(ray_at(ray, root), r) <= cy->diameter * cy->diameter)
-	{
-		rec->t = root;
-		rec->p = ray_at(ray, root);
-		r = vminus(rec->p, vminus(ray->orig, cy->center));
-		rec->normal = cy->normal;
-		//set_face_normal(ray, rec);
-		rec->albedo = world->albedo;
-		return (TRUE);
-	}
-	else
-	{
-		root = -1 * (vdot(vminus(vmult(ray->orig, 2), cy->center), cy->normal) + cy->height / 2) / vdot(ray->dir, cy->normal);
-		r = vplus(vminus(cy->center, ray->orig), vmult(cy->normal, -0.5 * cy->height));
-		if (vlength3(ray_at(ray, root), r) <= cy->diameter * cy->diameter)
-		{
-			rec->t = root;
-			rec->p = ray_at(ray, root);
-			r = vminus(rec->p, vminus(ray->orig, cy->center));
-			rec->normal = vmult(cy->normal, -1);
-			//set_face_normal(ray, rec);
-			rec->albedo = world->albedo;
-			return (TRUE);
-		}
-	}
+	// root = -1 * (vdot(vminus(vmult(ray->orig, 2), cy->center), cy->normal) - cy->height / 2) / vdot(ray->dir, cy->normal);
+	// // oc +- (height / 2) * normal // ray // length
+	// r = vplus(vminus(cy->center, ray->orig), vmult(cy->normal, 0.5 * cy->height));
+	// if (vlength3(ray_at(ray, root), r) <= cy->diameter * cy->diameter)
+	// {
+	// 	rec->t = root;
+	// 	rec->p = ray_at(ray, root);
+	// 	r = vminus(rec->p, vminus(ray->orig, cy->center));
+	// 	rec->normal = cy->normal;
+	// 	//set_face_normal(ray, rec);
+	// 	rec->albedo = world->albedo;
+	// 	return (TRUE);
+	// }
+	// else
+	// {
+	// 	root = -1 * (vdot(vminus(vmult(ray->orig, 2), cy->center), cy->normal) + cy->height / 2) / vdot(ray->dir, cy->normal);
+	// 	r = vplus(vminus(cy->center, ray->orig), vmult(cy->normal, -0.5 * cy->height));
+	// 	if (vlength3(ray_at(ray, root), r) <= cy->diameter * cy->diameter)
+	// 	{
+	// 		rec->t = root;
+	// 		rec->p = ray_at(ray, root);
+	// 		r = vminus(rec->p, vminus(ray->orig, cy->center));
+	// 		rec->normal = vmult(cy->normal, -1);
+	// 		//set_face_normal(ray, rec);
+	// 		rec->albedo = world->albedo;
+	// 		return (TRUE);
+	// 	}
+	// }
 
-	// 원기둥의 옆면
-	ap = vminus(vmult(cy->normal, vdot(cy->normal, ray->dir)), ray->dir);
+	oc = vminus(cy->center, ray->orig);
+	ap = vminus(ray->dir, vmult(cy->normal, vdot(cy->normal, ray->dir)));
+	bp = vminus(vmult(cy->normal, vdot(cy->normal, oc)), oc);
 	a = vdot(ap, ap);
-	bp = vplus(vminus(vminus(cy->center, vmult(ray->orig, 2)), vmult(cy->normal, vdot(cy->normal, cy->center))), vmult(cy->normal, 2 * vdot(ray->orig, cy->normal)));
 	b = 2 * vdot(ap, bp);
 	c = vdot(bp, bp) - cy->diameter * cy->diameter;
 	discriminant = b * b - 4 * a * c;
@@ -154,7 +154,7 @@ t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 		return (FALSE);
 	sqrtd = sqrt(discriminant);
 	root = (-b - sqrtd) / (2 * a); // 근의 공식 - 위를 2로 나눠서 처리해준 것 +- 공식이므로 작은 것 부터 확인
-	len = vdot(cy->normal, vminus(ray_at(ray,root), vminus(cy->center, ray->orig)));
+	len = vdot(cy->normal, vminus(ray_at(ray,root), oc));
 	if (root > rec->tmin || rec->tmax < root || len >= cy->height / 2 || len <= cy->height / 2 * -1) // 근이 최솟값 보다 작거나 최댓값 보다 클 때
 	{
 		root = (-b + sqrtd) / (2 * a); // 새로운 근을 구함
@@ -165,8 +165,8 @@ t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 	rec->t = root;
 	rec->p = ray_at(ray, root);
 	r = vminus(rec->p, vminus(ray->orig, cy->center));
-	rec->normal = vminus(vminus(r, vmult(vminus(cy->center, ray->orig), 2)), vmult(cy->normal, vdot(vminus(r, vminus(cy->center, ray->orig)), cy->normal)));
-	//set_face_normal(ray, rec);
+	rec->normal = vminus(rec->p, vplus(cy->center, vmult(cy->normal, len)));
+	set_face_normal(ray, rec);
 	rec->albedo = world->albedo;
 	return (TRUE);
 }
