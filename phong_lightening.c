@@ -43,7 +43,7 @@ t_color3        point_light_get(t_scene *scene, t_light *light)
     light_len = vlength(light_dir);
     light_ray = ray(vplus(scene->rec.p, vmult(vec3(1,1,1), EPSILON)), light_dir);
     if (in_shadow(scene->world, light_ray, light_len))
-        return (color3(0,0,0));
+         return (color3(0,0,0));
     light_dir = vunit(light_dir);
     kd = fmax(vdot(scene->rec.normal, light_dir), 0.0);// (교점에서 출발하여 광원을 향하는 벡터)와 (교점에서의 법선벡터)의 내적값.
     diffuse = vmult(light->light_color, kd);
