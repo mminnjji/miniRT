@@ -69,7 +69,7 @@ t_bool      hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 	//충족하는 근이 존재할 때
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = vdivide(vminus(rec->p, sp->center), sp->radius); 
+	rec->normal = vunit(vdivide(vminus(rec->p, sp->center), sp->radius)); 
 	set_face_normal(ray, rec);
 	rec->albedo = world->albedo;
 	return (TRUE);
@@ -121,7 +121,7 @@ t_bool		hit_cylinder_ud(t_object *world, t_ray *ray, t_hit_record *rec)
 		{
 			rec->t = root;
 			rec->p = ray_at(ray, root);
-			rec->normal = cy->normal;
+			rec->normal = vunit(cy->normal);
 			set_face_normal(ray, rec);
 			rec->albedo = world->albedo;
 			return (TRUE);
@@ -133,7 +133,7 @@ t_bool		hit_cylinder_ud(t_object *world, t_ray *ray, t_hit_record *rec)
 			{
 				rec->t = root;
 				rec->p = ray_at(ray, root);
-				rec->normal = vmult(cy->normal, -1);
+				rec->normal = vunit(vmult(cy->normal, -1));
 				set_face_normal(ray, rec);
 				rec->albedo = world->albedo;
 				return (TRUE);
@@ -184,7 +184,7 @@ t_bool      hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 	}
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = vminus(rec->p, vplus(cy->center, vmult(cy->normal, len)));
+	rec->normal = vunit(vminus(rec->p, vplus(cy->center, vmult(cy->normal, len))));
 	set_face_normal(ray, rec);
 	rec->albedo = world->albedo;
 	return (TRUE);

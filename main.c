@@ -71,11 +71,12 @@ t_scene	*scene_init(void)
         return (NULL);
     scene->canvas = canvas(400, 300);
     scene->camera = camera(&scene->canvas, point3(0, 0, 0), point3(0, 0, -5), vec3(0,1,0), 90);
-    world = object(C, cylinder(point3(0, 1, -5), vec3(0, 1, 0), 1.0, 4.0), color3(0.5, 0, 0.5));
-	oadd(&world, object(SP, sphere(point3(0, -2000, -5), 1999), color3(1, 1, 1)));
-	oadd(&world, object(SP, sphere(point3(3, 0, -5), 1), color3(0.2, 0.5, 0.9)));
+    world = object(SP, sphere(point3(0, -2000, -5), 1999), color3(1, 1, 1));
+	//world = object(SP, sphere(point3(3, 0, -5), 3), color3(0.2, 0.5, 0.9));
+	oadd(&world, object(C, cylinder(point3(1, 2, -5), vec3(0, 1, 0), 1.0, 2.0), color3(0.5, 0, 0.5)));
+	//oadd(&world, object(SP, sphere(point3(3, 0, -5), 3), color3(0.2, 0.5, 0.9)));
     //oadd(&world, object(P, plane(point3(0, -, -5), vec3(0, 1, 0)), color3(1, 0, 0)));
-	oadd(&world, object(SP, sphere(point3(-3, 0, -5), 1), color3(0.9, 0.6, 0)));
+	//oadd(&world, object(SP, sphere(point3(-3, 0, -5), 1), color3(0.9, 0.6, 0)));
 	scene->world = world;
     lights = object(LIGHT_POINT, light_point(point3(-10, 10, -5), color3(1, 1, 1), 0.7), color3(0, 0, 0));
     scene->light = lights;
