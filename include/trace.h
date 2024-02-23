@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 09:30:59 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 14:13:03 by man              ###   ########.fr       */
+/*   Updated: 2024/02/23 17:46:45 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ void		set_face_normal(t_ray *r, t_hit_record *rec);
 t_color3	phong_lighting(t_scene *scene);
 t_color3	point_light_get(t_scene *scene, t_light *light);
 int			in_shadow(t_object *objs, t_ray light_ray, double light_len);
+int			hit_cylinder_ud(t_object *world, t_ray *ray, t_hit_record *rec);
 
 #endif
