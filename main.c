@@ -1,120 +1,80 @@
-#include <stdio.h>
-#include "structures.h"
-#include "utils.h"
-#include "print.h"
-#include "scene.h"
-#include "trace.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/02/04 15:14:48 by man               #+#    #+#             */
+/*   Updated: 2024/02/23 15:20:10 by man              ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-double random_double()
+#include "include/structures.h"
+#include "include/utils.h"
+#include "include/print.h"
+#include "include/scene.h"
+#include "include/trace.h"
+#include "mlx/mlx.h"
+#include "include/parse.h"
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	double res;
+	char	*dst;
+
+	dst = data->addr + (y * data->line_len + x * (data->bit_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
+// 계단 현상을 없애기 위해 좌표 근처 랜덤값을 불러옴 
+double	random_double(void)
+{
+	double	res;
 
 	res = rand() % 100;
 	res = res / 100;
 	return (res);
 }
 
-double random_double2()
+int	closed(int key_code)
 {
-	double res;
-
-	res = rand() % 201;
-	res = res / 200 - 1;
-	return (res);
+	(void)key_code;
+	exit(0);
+	return (0);
 }
 
-t_vec3 random_vector()
+int	key_press(int keycode)
 {
-	t_vec3 new;
-	while (1)
+	if (keycode == 53)
+		exit(0);
+	return (0);
+}
+
+int	main(int argc, char **argv)
+{
+	t_arg		*arg;
+	double		u;
+	double		v;
+	t_scene		*scene;
+
+	u = 0;
+	v = 0;
+	arg = NULL;
+	if (parse(argc, argv, &arg))
 	{
-		new = vec3(random_double2(), random_double2(), random_double2());
-		if (!(new.x == 0 && new.y == 0 && new.z == 0))
-			break;
+		printf("error1\n");
+		return (1);
 	}
-	return (new);
-}
-
-t_vec3 random_in_unit_sphere()
-{
-	t_vec3 p;
-    while (1)
+	scene = scene_init(arg);
+	if (!scene)
 	{
-        p = random_vector();
-        if (vlength2(p) < 1)
-            return (p);
-    }
-}
-
-t_vec3 random_unit_vector()
-{
-    return vunit(random_in_unit_sphere());
-}
-
-t_vec3 random_on_hemisphere(t_vec3 normal)
-{
-    t_vec3 on_sphere = random_unit_vector();
-    if (vdot(on_sphere, normal) > 0.0)
-        return (on_sphere);
-    else
-        return (vmult(on_sphere, -1));
-}
-
-t_scene	*scene_init(void)
-{
-    t_scene     *scene;
-    t_object    *world;
-    t_object    *lights;
-    double      ka; 
-
-    if(!(scene = (t_scene *)malloc(sizeof(t_scene))))
-        return (NULL);
-    scene->canvas = canvas(400, 300);
-    scene->camera = camera(&scene->canvas, point3(0, 0, 0), point3(0, 0, -5), vec3(0,1,0), 90);
-    world = object(P, plane(point3(0,-1, -5), vec3(0, 1, 0.2)), color3(1, 1, 1));
-	//world = object(SP, sphere(point3(0, -2000, -5), 1999), color3(1, 1, 1));
-	//world = object(SP, sphere(point3(3, 0, -5), 3), color3(0.2, 0.5, 0.9));
-	//oadd(&world, object(C, cylinder(point3(1, 2, -5), vec3(0, 1, 0), 1.0, 2.0), color3(0.5, 0, 0.5)));
-	oadd(&world, object(SP, sphere(point3(3, 0, -5), 3), color3(0.2, 0.5, 0.9)));
-    //oadd(&world, object(P, plane(point3(0, 0, -5), vec3(-1, 0, 1)), color3(1, 0, 0)));
-	oadd(&world, object(SP, sphere(point3(-3, 0, -5), 1), color3(0.9, 0.6, 0)));
-	scene->world = world;
-    lights = object(LIGHT_POINT, light_point(point3(0, 10, 0), color3(1, 1, 1), 0.7), color3(0, 0, 0));
-    scene->light = lights;
-    ka = 0.1; 
-    scene->ambient = vmult(color3(1,1,1), ka); 
-    return (scene);
-}
-
-int	main(void)
-{
-    int     i;
-    int     j;
-	double      u;
-    double      v;
-    t_color3    pixel_color;
-	t_scene     *scene;
-
-	scene = scene_init();
-    printf("P3\n%d %d\n255\n", scene->canvas.width, scene->canvas.height);
-    j = scene->canvas.height - 1;
-	while (j >= 0)
-    {
-        i = 0;
-        while (i < scene->canvas.width)
-        {
-			pixel_color = color3(0, 0, 0);
-			for (int s = 0; s < 100; ++s)
-			{
-				u = (double)(i + random_double()) / (scene->canvas.width - 1);
-				v = (double)(j + random_double()) / (scene->canvas.height - 1);		
-				scene->ray = ray_primary(&scene->camera, u, v);
-				pixel_color = vplus(ray_color(scene), pixel_color);
-			}
-            write_color(pixel_color);
-            ++i;
-        }
-        --j;
-    }
-    return (0);
+		printf("error2\n");
+		return (1);
+	}
+	print_mlx(scene, u, v);
+	ft_lstclear(&arg);
+	ft_lstclear2(&(scene->world));
+	free(scene->light);
+	free(scene);
+	return (0);
 }
