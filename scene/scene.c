@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 15:44:45 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 15:19:32 by man              ###   ########.fr       */
+/*   Updated: 2024/02/27 21:05:31 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ t_camera	camera(t_canvas *canvas, t_point3 lookfrom, t_vec3 vd, double vfov)
 	viewport_height = 2.0 * theta;
 	v[0] = vunit(vd);
 	if (vlength(vcross(vec3(0, 1, 0), v[0])))
-		v[1] = vunit(vcross(vec3(0, 1, 0), v[0]));
+		v[1] = vunit(vcross(v[0], vec3(0, 1, 0)));
 	else
 		v[1] = vunit(vcross(vec3(0, 1, 1), v[0]));
-	v[2] = vcross(v[0], v[1]);
+	v[2] = vcross(v[1], v[0]);
 	cam.orig = lookfrom;
 	cam.viewport_h = viewport_height;
 	cam.viewport_w = viewport_height * canvas->aspect_ratio;

@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 18:38:41 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 14:14:02 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 21:11:08 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,20 @@ t_color3	phong_lighting(t_scene *scene)
 	return (vmin(vmult_(light_color, scene->rec.albedo), color3(1, 1, 1)));
 }
 
+t_vec3	cplus(t_vec3 vec, t_vec3 vec2)
+{
+	vec.x += vec2.x;
+	if (vec.x > 1)
+		vec.x = 1;
+	vec.y += vec2.y;
+	if (vec.y > 1)
+		vec.y = 1;
+	vec.z += vec2.z;
+	if (vec.z > 1)
+		vec.z = 1;
+	return (vec);
+}
+
 t_color3	point_light_get(t_scene *scene, t_light *l)
 {
 	t_color3	diffuse;
@@ -45,15 +59,16 @@ t_color3	point_light_get(t_scene *scene, t_light *l)
 
 	l_dir = vminus(l->orig, scene->rec.p);
 	l_ray = ray(vplus(scene->rec.p, \
-	vmult(scene->rec.normal, EPSILON)), l_dir);
-	if (in_shadow(scene->world, l_ray, vlength(l_dir)))
+	vmult(l_dir, EPSILON)), l_dir);
+	if (in_shadow(scene->world, l_ray, \
+	vlength(l_dir) + vlength(vmult(l_dir, EPSILON))))
 		return (color3(0, 0, 0));
 	l_dir = vunit(l_dir);
 	diffuse = vmult(l->l_c, fmax(vdot(scene->rec.normal, l_dir), 0.0));
 	v_dir[0] = vunit(vmult(scene->ray.dir, -1));
 	v_dir[1] = reflect(vmult(l_dir, -1), scene->rec.normal);
 	spc = vmult(vmult(l->l_c, 0.5), pow(fmax(vdot(v_dir[0], v_dir[1]), 0), 64));
-	return (vmult(vplus(vplus(scene->ambient, diffuse), spc), l->b_r * LUMEN));
+	return (vmult(vplus(diffuse, spc), l->b_r * LUMEN));
 }
 
 int	in_shadow(t_object *objs, t_ray light_ray, double light_len)

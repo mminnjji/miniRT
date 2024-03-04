@@ -76,3 +76,21 @@ int	check_point(char *str, int flag)
 	}
 	return (ft_free2(t) + 1);
 }
+
+int	name_error(char *av)
+{
+	int	i;
+
+	i = 0;
+	while (*(av + i))
+		i++;
+	if (i <= 3)
+		return (1);
+	if (*(av + i - 4) == '/')
+		return (1);
+	if (*(av + i - 3) != '.' || *(av + i - 2) != 'r')
+		return (1);
+	if (*(av + i - 1) != 't')
+		return (1);
+	return (0);
+}

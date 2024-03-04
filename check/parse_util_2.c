@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 17:31:38 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 15:30:12 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 21:12:02 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ t_point3	to_point(char *str)
 	char		**tmp;
 	t_point3	p;
 
-	tmp = ft_split(str, ','); // 이거 말록오류 일때 어떻게 해제해야 하는지 모르겟음
+	tmp = ft_split(str, ',');
 	p = point3(to_d(tmp[0]), to_d(tmp[1]), to_d(tmp[2]));
 	ft_free2(tmp);
 	return (p);

@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 16:02:43 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 17:45:43 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 12:35:02 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	hit_sphere(t_object *world, t_ray *ray, t_hit_record *rec)
 	}
 	rec->t = root;
 	rec->p = ray_at(ray, root);
-	rec->normal = vdivide(vminus(rec->p, sp->center), sp->radius);
+	rec->normal = vunit(vminus(rec->p, sp->center));
 	set_face_normal(ray, rec);
 	rec->albedo = world->albedo;
 	return (1);

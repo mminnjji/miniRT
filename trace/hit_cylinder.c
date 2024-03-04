@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 17:10:33 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 17:46:21 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 21:10:49 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	hit_cylinder_util(t_ray *ray, t_cylinder *cy, double d[], t_vec3 oc)
 	bv = vminus(oc, vmult(cy->normal, vdot(cy->normal, oc)));
 	d[0] = vdot(av, av);
 	d[1] = 2 * vdot(av, bv);
-	d[2] = vdot(bv, bv) - cy->diameter * cy->diameter;
+	d[2] = vdot(bv, bv) - cy->radius * cy->radius;
 	d[3] = d[1] * d[1] - 4 * d[0] * d[2];
 	if (d[3] < 0)
 		return (1);
@@ -55,9 +55,9 @@ int	hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 	cy = world->element;
 	oc = vminus(cy->center, ray->orig);
 	if (hit_cylinder_util(ray, cy, d, oc))
-		return (hit_cylinder_ud(world, ray, rec));
+		return (0);
 	if (d[6] < rec->tmin || rec->tmax < d[6] \
-	|| d[5] > cy->height / 2 || d[5] < cy->height / 2 * -1)
+	|| d[5] >= cy->height / 2 || d[5] <= cy->height / 2 * -1)
 	{
 		d[4] = hit_cylinder_ud(world, ray, rec);
 		d[6] = (-d[1] + sqrt(d[3])) / (2 * d[0]);
@@ -65,7 +65,7 @@ int	hit_cylinder(t_object *world, t_ray *ray, t_hit_record *rec)
 			return (1);
 		d[5] = vdot(cy->normal, vminus(vmult(ray->dir, d[6]), oc));
 		if (d[6] < rec->tmin || rec->tmax < d[6] \
-		|| d[5] > cy->height / 2 || d[5] < cy->height / 2 * -1)
+		|| d[5] >= cy->height / 2 || d[5] <= cy->height / 2 * -1)
 			return (0);
 	}
 	hit_cylinder_(world, ray, rec, d);

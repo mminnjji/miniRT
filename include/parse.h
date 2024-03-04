@@ -42,5 +42,6 @@ t_arg		*init_arg(void);
 void		ft_lstadd_back(t_arg **lst, t_arg *new);
 int			ft_free2(char **str);
 char		*ft_strcpy(char *dst);
+int			name_error(char *av);
 
 #endif

@@ -29,6 +29,8 @@ int	get_n(int fd)
 	return (n);
 }
 
+
+
 char	**get_rt(int fd, char *str)
 {
 	char	**rt;
@@ -92,6 +94,8 @@ int	parse(int argc, char **argv, t_arg **arg)
 	char	**r;
 
 	if (argc != 2)
+		return (1);
+	if (name_error(argv[1]))
 		return (1);
 	i[0] = open(argv[1], O_RDONLY);
 	if (i[0] < 0)

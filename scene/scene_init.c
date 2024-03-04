@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 20:23:08 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 14:15:55 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 21:12:27 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	scene_init_util_1(t_scene **scene, t_arg *arg)
 	if (!ft_smp(arg->type, "C", 1))
 	{
 		(*scene)->camera = \
-		camera(&((*scene)->canvas), arg->p, arg->v, arg->done);
+		camera(&((*scene)->canvas), arg->p, vunit(arg->v), arg->done);
 		return (1);
 	}
 	if (!ft_smp(arg->type, "L", 1))
@@ -44,12 +44,12 @@ int	scene_init_util_1(t_scene **scene, t_arg *arg)
 void	scene_init_util_2(t_object **world, t_arg *arg)
 {
 	if (!ft_smp(arg->type, "sp", 2))
-		oadd(world, object(SP, sphere(arg->p, arg->done), arg->c));
+		oadd(world, object(SP, sphere(arg->p, arg->done / 2.0), arg->c));
 	if (!ft_smp(arg->type, "cy", 2))
 		oadd(world, object(C, \
-		cylinder(arg->p, arg->v, arg->done, arg->dtwo), arg->c));
+		cylinder(arg->p, vunit(arg->v), arg->done / 2.0, arg->dtwo), arg->c));
 	if (!ft_smp(arg->type, "pl", 2))
-		oadd(world, object(P, plane(arg->p, arg->v), arg->c));
+		oadd(world, object(P, plane(arg->p, vunit(arg->v)), arg->c));
 }
 
 t_scene	*scene_init(t_arg *arg)
@@ -65,7 +65,7 @@ t_scene	*scene_init(t_arg *arg)
 	scene = (t_scene *)malloc(sizeof(t_scene));
 	if (!scene)
 		return (NULL);
-	scene->canvas = canvas(400, 300);
+	scene->canvas = canvas(1920, 1080);
 	while (arg)
 	{
 		c[3] = scene_init_util_1(&scene, arg);
@@ -87,7 +87,7 @@ int	print_mlx_util(int i[], double *u, double *v, t_scene **s)
 
 	pixel_color = color3(0, 0, 0);
 	j = -1;
-	while (++j < 100)
+	while (++j < 5)
 	{
 		*u = (double)(i[1] + random_double()) / ((*s)->canvas.width - 1);
 		*v = (double)(i[0] + random_double()) / ((*s)->canvas.height - 1);

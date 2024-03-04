@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 15:05:46 by man               #+#    #+#             */
-/*   Updated: 2024/02/22 17:28:14 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 15:13:53 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ struct	s_cylinder
 {
 	t_point3	center;
 	t_vec3		normal;
-	double		diameter;
+	double		radius;
 	double		height;
 };
 

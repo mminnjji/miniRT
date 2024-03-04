@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 15:17:50 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 15:19:09 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 15:30:06 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	write_color(t_color3 pixel_color)
 	double	scale;
 	int		c_v[4];
 
-	scale = 0.01;
+	scale = 0.2;
 	cc[0] = sqrt(pixel_color.x * scale);
 	cc[1] = sqrt(pixel_color.y * scale);
 	cc[2] = sqrt(pixel_color.z * scale);

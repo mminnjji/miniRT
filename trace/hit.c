@@ -6,7 +6,7 @@
 /*   By: man <man@student.42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/05 16:02:43 by man               #+#    #+#             */
-/*   Updated: 2024/02/23 14:14:11 by man              ###   ########.fr       */
+/*   Updated: 2024/02/28 21:00:36 by man              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 
 int	hit(t_object *world, t_ray *ray, t_hit_record *rec)
 {
+	int				count;
 	int				hit_anything;
 	t_hit_record	temp_rec;
 
 	temp_rec = *rec;
 	hit_anything = 0;
+	count = 0;
 	while (world)
 	{
 		if (hit_obj(world, ray, &temp_rec))
@@ -29,6 +31,7 @@ int	hit(t_object *world, t_ray *ray, t_hit_record *rec)
 			temp_rec.tmax = temp_rec.t;
 			*rec = temp_rec;
 		}
+		count++;
 		world = world->next;
 	}
 	return (hit_anything);
@@ -37,6 +40,8 @@ int	hit(t_object *world, t_ray *ray, t_hit_record *rec)
 int	hit_obj(t_object *world, t_ray *ray, t_hit_record *rec)
 {
 	int	hit_result;
+	int	a;
+	int	b;
 
 	hit_result = 0;
 	if (world->type == SP)
@@ -44,6 +49,13 @@ int	hit_obj(t_object *world, t_ray *ray, t_hit_record *rec)
 	if (world->type == P)
 		hit_result = hit_plane(world, ray, rec);
 	if (world->type == C)
-		hit_result = hit_cylinder(world, ray, rec);
+	{
+		a = hit_cylinder(world, ray, rec);
+		if (a)
+			rec->tmax = rec->t;
+		b = hit_cylinder_ud(world, ray, rec);
+		if (a || b)
+			hit_result = 1;
+	}
 	return (hit_result);
 }
